@@ -4,7 +4,7 @@ import org.w3c.dom.css.Rect;
 
 import java.awt.*;
 
-public class Bullet {
+public class Bullet extends AbstractGameObject {
     public static final int SPEED = 10; //速度
     private int x, y; //位置
     private Dir dir;//方向

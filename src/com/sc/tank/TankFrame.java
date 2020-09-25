@@ -12,9 +12,10 @@ public class TankFrame extends Frame {
 
     private Player myTank;
 
-    private List<Explode> explodes;
-    private List<Tank> tanks;
-    private List<Bullet> bullets;
+//    private List<Explode> explodes;
+//    private List<Tank> tanks;
+//    private List<Bullet> bullets;
+    List<AbstractGameObject> objects;
 
     public static final int GAME_WIDTH = 800;
     public static final int GAME_HEIGHT = 600;
@@ -32,15 +33,14 @@ public class TankFrame extends Frame {
 
     private void initGameObjects() {
         myTank = new Player(100,100, Dir.R, Group.GOOD);
-        tanks = new ArrayList<>();
-        bullets = new ArrayList<>();
-        explodes = new ArrayList<>();
 
+        objects = new ArrayList<>();
         int tankCount = Integer.parseInt(PropertyMgr.get("initTankCount"));
 
         for(int i=0; i<tankCount; i++){
-            tanks.add(new Tank(100 + 50*i, 200, Dir.D ,Group.BAD));
+            this.add(new Tank(100 + 50*i, 200, Dir.D ,Group.BAD));
         }
+        this.add(new Wall(300, 200, 400, 20));
     }
 
     Image offScreenImage = null;
@@ -57,9 +57,8 @@ public class TankFrame extends Frame {
         paint(gOffScreen);//传的是内存中的图上的画笔
         g.drawImage(offScreenImage, 0, 0, null);//画完之后，调用这个让显存的画笔画内存中的图，来实现双缓冲
     }
-
-    public void add(Bullet bullet){
-        this.bullets.add(bullet);
+    public void add(AbstractGameObject go){
+        objects.add(go);
     }
 
     @Override
@@ -68,48 +67,50 @@ public class TankFrame extends Frame {
 //        g.fillRect(x, y,50,50);
         Color c = g.getColor();
         g.setColor(Color.WHITE);
-        g.drawString("bullets" + bullets.size(), 15, 50);
-        g.drawString("enemies" + tanks.size(), 15, 70);
-        g.drawString("explodes" + explodes.size(), 15, 90);
+//        g.drawString("bullets" + bullets.size(), 15, 50);
+//        g.drawString("enemies" + tanks.size(), 15, 70);
+//        g.drawString("explodes" + explodes.size(), 15, 90);
         g.setColor(c);
 
         myTank.paint(g);
-        for(int i =0; i<tanks.size(); i++){
-            if(!tanks.get(i).isLive()){
-                tanks.remove(i);
-            }else {
-                tanks.get(i).paint(g);
-            }
 
+        for(int i = 0; i < objects.size(); i++){
+            objects.get(i).paint(g);
         }
 
-        for(int i=0; i<bullets.size(); i++){
-            for(int j = 0; j < tanks.size(); j++){
-                bullets.get(i).collidesWithTank(tanks.get(j));
-            }
-
-            if(!bullets.get(i).isLive()){
-                bullets.remove(i);
-            }
-            else {
-                bullets.get(i).paint(g);
-            }
-        }
-
-        for(int i =0; i<explodes.size(); i++){
-            if(!explodes.get(i).isLive()){
-                explodes.remove(i);
-            }else {
-                explodes.get(i).paint(g);
-            }
-        }
+//        for(int i =0; i<tanks.size(); i++){
+//            if(!tanks.get(i).isLive()){
+//                tanks.remove(i);
+//            }else {
+//                tanks.get(i).paint(g);
+//            }
+//
+//        }
+//
+//        for(int i=0; i<bullets.size(); i++){
+//            for(int j = 0; j < tanks.size(); j++){
+//                bullets.get(i).collidesWithTank(tanks.get(j));
+//            }
+//
+//            if(!bullets.get(i).isLive()){
+//                bullets.remove(i);
+//            }
+//            else {
+//                bullets.get(i).paint(g);
+//            }
+//        }
+//
+//        for(int i =0; i<explodes.size(); i++){
+//            if(!explodes.get(i).isLive()){
+//                explodes.remove(i);
+//            }else {
+//                explodes.get(i).paint(g);
+//            }
+//        }
 
 //        System.out.println("paint");
     }
 
-    public void add(Explode explode) {
-        this.explodes.add(explode);
-    }
 
     //内聚：有一个类，属于这个类的职责的都放在这个类里
     //耦合：别的类访问这个类时，牵扯的比较多，耦合度就比较高
