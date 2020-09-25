@@ -1,5 +1,10 @@
 package com.sc.tank;
 
+import com.sc.tank.strategy.DefaultFireStrategy;
+import com.sc.tank.strategy.FireStrategy;
+import com.sc.tank.strategy.FourDirFireStrategy;
+import com.sc.tank.strategy.LeftRightFireStrategy;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
@@ -19,6 +24,24 @@ public class Player {
         this.dir = dir;
         this.group = group;
 
+        //初始化策略
+        this.initFireStrategy();
+    }
+
+    public Dir getDir() {
+        return dir;
+    }
+
+    public void setDir(Dir dir) {
+        this.dir = dir;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
     }
 
     public boolean isLive() {
@@ -150,11 +173,26 @@ public class Player {
         }
         setMainDir();
     }
+    private FireStrategy strategy = null;
+    private void initFireStrategy(){
+        //        ClassLoader loader = Player.class.getClassLoader();
+
+        String className = PropertyMgr.get("tankFireStrategy");
+        try {
+//            Class clazz = loader.loadClass("com.sc.tank.strategy." + className);
+            Class clazz = Class.forName("com.sc.tank.strategy." + className);
+            strategy = (FireStrategy)(clazz.getDeclaredConstructor().newInstance()); //会拿到构造方法
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     private void fire() {
-        int bx = x +ResourceMgr.goodTankU.getWidth()/2 - ResourceMgr.bulletD.getWidth()/2;
-        int by = y +ResourceMgr.goodTankU.getHeight()/2 - ResourceMgr.bulletD.getHeight()/2;
-        TankFrame.INSTANCE.add(new Bullet(bx, by, dir, group));
+        //使用多态
+//        FireStrategy strategy = new DefaultFireStrategy();
+//        FireStrategy strategy = new FourDirFireStrategy();
+//        FireStrategy strategy = new LeftRightFireStrategy();
+        strategy.fire(this);
     }
 
     public void die() {

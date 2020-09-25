@@ -1,3 +1,6 @@
 #key-value pair
 
 initTankCount=5
+
+#tank fire strategy 坦克发射子弹的策略
+tankFireStrategy=FourDirFireStrategy
