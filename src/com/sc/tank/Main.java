@@ -1,11 +1,11 @@
-import java.awt.*;
-import java.util.concurrent.TimeUnit;
+package com.sc.tank;
 
 public class Main {
     public static void main(String[] args){
-        //TankFrame继承自Frame，可以重写Frame的方法，实现画图
-        TankFrame tf = new TankFrame(); //窗口
-        tf.setVisible(true);
+//        //TankFrame继承自Frame，可以重写Frame的方法，实现画图
+//        TankFrame tf = new TankFrame(); //窗口
+        TankFrame.INSTANCE.setVisible(true);
+        new Thread(()->new Audio("audio/war1.wav").play()).start();
         //死循环
         for(;;){
             try {
@@ -14,7 +14,7 @@ public class Main {
                 e.printStackTrace();
             }
             //每25毫秒调用repaint
-            tf.repaint();//会调用到paint方法
+            TankFrame.INSTANCE.repaint();//会调用到paint方法
         }
 
     }
