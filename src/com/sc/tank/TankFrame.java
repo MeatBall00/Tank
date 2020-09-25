@@ -5,6 +5,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 public class TankFrame extends Frame {
     public static final TankFrame INSTANCE = new TankFrame();//单例
@@ -35,7 +36,9 @@ public class TankFrame extends Frame {
         bullets = new ArrayList<>();
         explodes = new ArrayList<>();
 
-        for(int i=0; i<10; i++){
+        int tankCount = Integer.parseInt(PropertyMgr.get("initTankCount"));
+
+        for(int i=0; i<tankCount; i++){
             tanks.add(new Tank(100 + 50*i, 200, Dir.D ,Group.BAD));
         }
     }
