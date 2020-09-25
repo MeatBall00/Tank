@@ -2,6 +2,7 @@ package com.sc.tank;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.BitSet;
 import java.util.Random;
 
 public class Tank extends AbstractGameObject {
@@ -16,6 +17,7 @@ public class Tank extends AbstractGameObject {
     private int width, height;
     private int oldX, oldY;
 
+    private Rectangle rect;
 
     public Tank(int x, int y, Dir dir, Group group) {
         this.x = x;
@@ -28,6 +30,8 @@ public class Tank extends AbstractGameObject {
 
         this.width = ResourceMgr.goodTankU.getWidth();
         this.height = ResourceMgr.goodTankU.getHeight();
+
+        this.rect = new Rectangle(x, y, width, height);
     }
 
     public boolean isLive() {
@@ -81,6 +85,8 @@ public class Tank extends AbstractGameObject {
                 break;
         }
         move();
+        rect.x = x;
+        rect.y = y;
     }
 
     private void move() {
@@ -124,7 +130,7 @@ public class Tank extends AbstractGameObject {
         }
     }
 
-    private void back() {
+    public void back() {
         x = oldX;
         y = oldY;
     }
@@ -160,5 +166,9 @@ public class Tank extends AbstractGameObject {
         this.setLive(false);
         TankFrame.INSTANCE.add(new Explode(x, y));
 
+    }
+
+    public Rectangle getRect() {
+        return rect;
     }
 }

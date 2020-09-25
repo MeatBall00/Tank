@@ -1,9 +1,16 @@
 package com.sc.tank;
 
+import com.sc.tank.chainofresponsibility.BulletTankCollider;
+import com.sc.tank.chainofresponsibility.BulletWallCollider;
+import com.sc.tank.chainofresponsibility.Collider;
+import com.sc.tank.chainofresponsibility.ColliderChain;
+
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
@@ -15,6 +22,8 @@ public class TankFrame extends Frame {
 //    private List<Explode> explodes;
 //    private List<Tank> tanks;
 //    private List<Bullet> bullets;
+
+    ColliderChain chain = new ColliderChain();
     List<AbstractGameObject> objects;
 
     public static final int GAME_WIDTH = 800;
@@ -29,6 +38,8 @@ public class TankFrame extends Frame {
         this.addKeyListener(new TankKeyListener());
 
         initGameObjects();
+        
+
     }
 
     private void initGameObjects() {
@@ -75,7 +86,19 @@ public class TankFrame extends Frame {
         myTank.paint(g);
 
         for(int i = 0; i < objects.size(); i++){
-            objects.get(i).paint(g);
+            if(!objects.get(i).isLive()){
+                objects.remove(i);
+                break;
+            }
+
+            AbstractGameObject go1 = objects.get(i);
+            for(int j = 0; j < objects.size(); j++){
+                AbstractGameObject go2 = objects.get(j);
+                chain.collide(go1, go2);
+            }
+            if(objects.get(i).isLive()){
+                objects.get(i).paint(g);
+            }
         }
 
 //        for(int i =0; i<tanks.size(); i++){
