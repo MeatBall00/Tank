@@ -102,10 +102,10 @@ public class Player extends AbstractGameObject {
                 break;
         }
 
-        Color old = g.getColor();
-        g.setColor(Color.YELLOW);
-        g.drawRect(x,y,rect.width,rect.height);
-        g.setColor(old);
+//        Color old = g.getColor();
+//        g.setColor(Color.YELLOW);
+//        g.drawRect(x,y,rect.width,rect.height);
+//        g.setColor(old);
 
         move();
 

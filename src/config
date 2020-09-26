@@ -1,7 +1,7 @@
 #key-value pair
 
-initTankCount=10
+initTankCount=4
 
 #tank fire strategy 坦克发射子弹的策略
 tankFireStrategy=FourDirFireStrategy
-colliders=BulletTankCollider,BulletWallCollider,TankWallCollider,TankTankCollider,TankPlayerCollider
+colliders=BulletTankCollider,BulletWallCollider,TankWallCollider,TankTankCollider,TankPlayerCollider,BulletPlayerCollider,PlayerWallCollider

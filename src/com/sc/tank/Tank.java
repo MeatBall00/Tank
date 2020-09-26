@@ -85,10 +85,10 @@ public class Tank extends AbstractGameObject {
                 break;
         }
 
-        Color old = g.getColor();
-        g.setColor(Color.YELLOW);
-        g.drawRect(x,y,rect.width,rect.height);
-        g.setColor(old);
+//        Color old = g.getColor();
+//        g.setColor(Color.YELLOW);
+//        g.drawRect(x,y,rect.width,rect.height);
+//        g.setColor(old);
 
         move();
         rect.x = x;

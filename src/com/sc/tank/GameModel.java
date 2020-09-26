@@ -23,9 +23,10 @@ public class GameModel implements Serializable {
         int tankCount = Integer.parseInt(PropertyMgr.get("initTankCount"));
 
         for(int i=0; i<tankCount; i++){
-            this.add(new Tank(100 + 100*i, 200, Dir.D ,Group.BAD));
+            this.add(new Tank(100 + 100*i, 500, Dir.D ,Group.BAD));
         }
-//        this.add(new Wall(300, 200, 400, 20));
+        this.add(myTank);
+        this.add(new Wall(300, 200, 400, 20));
     }
 
     public void add(AbstractGameObject go){
@@ -56,13 +57,11 @@ public class GameModel implements Serializable {
                 chain.collide(go1, go2);
             }
 
-            chain.collide(myTank,go1);
-
             if(objects.get(i).isLive()){
                 objects.get(i).paint(g);
             }
         }
-        myTank.paint(g);
+//        myTank.paint(g);
 
 
     }
