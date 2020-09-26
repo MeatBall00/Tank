@@ -6,7 +6,7 @@ import java.util.BitSet;
 import java.util.Random;
 
 public class Tank extends AbstractGameObject {
-    public static final int SPEED = 5;
+    public static final int SPEED = 3;
     private int x , y;
     private Dir dir;
     private boolean bL, bU, bR, bD;
@@ -28,8 +28,8 @@ public class Tank extends AbstractGameObject {
         this.oldX = x;
         this.oldY = y;
 
-        this.width = ResourceMgr.goodTankU.getWidth();
-        this.height = ResourceMgr.goodTankU.getHeight();
+        this.width = ResourceMgr.badTankU.getWidth();
+        this.height = ResourceMgr.badTankU.getHeight();
 
         this.rect = new Rectangle(x, y, width, height);
     }
@@ -84,9 +84,16 @@ public class Tank extends AbstractGameObject {
                 g.drawImage(ResourceMgr.badTankD, x, y, null);
                 break;
         }
+
+        Color old = g.getColor();
+        g.setColor(Color.YELLOW);
+        g.drawRect(x,y,rect.width,rect.height);
+        g.setColor(old);
+
         move();
         rect.x = x;
         rect.y = y;
+
     }
 
     private void move() {
@@ -94,7 +101,6 @@ public class Tank extends AbstractGameObject {
             return;
         oldX = x;
         oldY = y;
-
         switch (dir){
             case L:
                 x -= SPEED;

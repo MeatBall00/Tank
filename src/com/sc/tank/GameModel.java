@@ -40,8 +40,6 @@ public class GameModel implements Serializable {
 //        g.drawString("explodes" + explodes.size(), 15, 90);
         g.setColor(c);
 
-        myTank.paint(g);
-
         for(int i = 0; i < objects.size(); i++){
             AbstractGameObject object = objects.get(i);
             if(!object.isLive()){
@@ -50,16 +48,23 @@ public class GameModel implements Serializable {
             }
         }
 
+
         for(int i = 0; i < objects.size(); i++){
             AbstractGameObject go1 = objects.get(i);
             for(int j = 0; j < objects.size(); j++){
                 AbstractGameObject go2 = objects.get(j);
                 chain.collide(go1, go2);
             }
+
+            chain.collide(myTank,go1);
+
             if(objects.get(i).isLive()){
                 objects.get(i).paint(g);
             }
         }
+        myTank.paint(g);
+
+
     }
 
     public Player getMyTank(){
