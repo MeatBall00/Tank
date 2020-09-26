@@ -3,10 +3,11 @@ package com.sc.tank;
 import com.sc.tank.chainofresponsibility.ColliderChain;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameModel {
+public class GameModel implements Serializable {
     private Player myTank;
     ColliderChain chain = new ColliderChain();
     List<AbstractGameObject> objects;
@@ -42,11 +43,14 @@ public class GameModel {
         myTank.paint(g);
 
         for(int i = 0; i < objects.size(); i++){
-            if(!objects.get(i).isLive()){
-                objects.remove(i);
+            AbstractGameObject object = objects.get(i);
+            if(!object.isLive()){
+                objects.remove(object);
                 break;
             }
+        }
 
+        for(int i = 0; i < objects.size(); i++){
             AbstractGameObject go1 = objects.get(i);
             for(int j = 0; j < objects.size(); j++){
                 AbstractGameObject go2 = objects.get(j);
