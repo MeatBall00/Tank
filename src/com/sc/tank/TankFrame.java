@@ -17,17 +17,14 @@ import java.util.Properties;
 public class TankFrame extends Frame {
     public static final TankFrame INSTANCE = new TankFrame();//单例
 
-    private Player myTank;
-
-//    private List<Explode> explodes;
+    //    private List<Explode> explodes;
 //    private List<Tank> tanks;
 //    private List<Bullet> bullets;
 
-    ColliderChain chain = new ColliderChain();
-    List<AbstractGameObject> objects;
-
     public static final int GAME_WIDTH = 800;
     public static final int GAME_HEIGHT = 600;
+
+    private GameModel gm = new GameModel();
 
 
     private TankFrame(){
@@ -36,22 +33,6 @@ public class TankFrame extends Frame {
         this.setSize(GAME_WIDTH,GAME_HEIGHT);
         //观察者模式
         this.addKeyListener(new TankKeyListener());
-
-        initGameObjects();
-        
-
-    }
-
-    private void initGameObjects() {
-        myTank = new Player(100,100, Dir.R, Group.GOOD);
-
-        objects = new ArrayList<>();
-        int tankCount = Integer.parseInt(PropertyMgr.get("initTankCount"));
-
-        for(int i=0; i<tankCount; i++){
-            this.add(new Tank(100 + 50*i, 200, Dir.D ,Group.BAD));
-        }
-        this.add(new Wall(300, 200, 400, 20));
     }
 
     Image offScreenImage = null;
@@ -68,38 +49,14 @@ public class TankFrame extends Frame {
         paint(gOffScreen);//传的是内存中的图上的画笔
         g.drawImage(offScreenImage, 0, 0, null);//画完之后，调用这个让显存的画笔画内存中的图，来实现双缓冲
     }
-    public void add(AbstractGameObject go){
-        objects.add(go);
-    }
 
     @Override
     public void paint(Graphics g) { //java的图形系统自动调用，需要重新绘制时会调用这个方法 Graphics g 这个参数被系统初始化 代表图形里面系统传递给你的一支画笔
         //画一个方块 填充  如何动起来：1.不停刷新窗口 2.矩形位置进行变化
 //        g.fillRect(x, y,50,50);
-        Color c = g.getColor();
-        g.setColor(Color.WHITE);
-//        g.drawString("bullets" + bullets.size(), 15, 50);
-//        g.drawString("enemies" + tanks.size(), 15, 70);
-//        g.drawString("explodes" + explodes.size(), 15, 90);
-        g.setColor(c);
+        gm.paint(g);
 
-        myTank.paint(g);
 
-        for(int i = 0; i < objects.size(); i++){
-            if(!objects.get(i).isLive()){
-                objects.remove(i);
-                break;
-            }
-
-            AbstractGameObject go1 = objects.get(i);
-            for(int j = 0; j < objects.size(); j++){
-                AbstractGameObject go2 = objects.get(j);
-                chain.collide(go1, go2);
-            }
-            if(objects.get(i).isLive()){
-                objects.get(i).paint(g);
-            }
-        }
 
 //        for(int i =0; i<tanks.size(); i++){
 //            if(!tanks.get(i).isLive()){
@@ -144,13 +101,17 @@ public class TankFrame extends Frame {
 
         @Override
         public void keyPressed(KeyEvent e) {
-            myTank.keyPressed(e);
+            gm.getMyTank().keyPressed(e);
         }
 
         @Override
         public void keyReleased(KeyEvent e) {
-            myTank.keyReleased(e);
+            gm.getMyTank().keyReleased(e);
         }
+    }
+
+    public GameModel getGm(){
+        return this.gm;
     }
 
 }

@@ -91,9 +91,6 @@ public class Bullet extends AbstractGameObject {
         boundsCheck();
     }
 
-    public void collidesWithTank(Tank tank) {
-
-    }
     public void die(){
         this.setLive(false);
     }
